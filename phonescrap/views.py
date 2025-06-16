@@ -1,0 +1,39 @@
+from django.shortcuts import render
+import requests
+from bs4 import BeautifulSoup
+# Create your views here.
+
+def get_content(product):
+    USER_AGENT = "Mozilla/5.0 "
+    LANGUAGE = "en-US< en;q=0.5"
+    session = requests.Session()
+    session.headers['User-Agent'] = USER_AGENT
+    session.headers['Accept-Language'] = LANGUAGE
+    session.headers['Content-Language'] = LANGUAGE
+    html_content = session.get(f"https://www.flipkart.com/search?q={product}").text
+    return html_content
+
+def home(request):
+    product_info_list = []
+    if 'product' in request.GET:
+        product = request.GET.get('product')
+        html_content = get_content(product)
+        soup = BeautifulSoup(html_content, 'html.parser')
+
+        product_items = soup.find_all('div', class_="tUxRFH")
+
+        for items in product_items:
+            name_tag = items.find('div', class_="KzDlHZ")
+            price_tag = items.find('div', class_="Nx9bqj _4b5DiR")
+            image_tag = items.find('img')
+            if name_tag and price_tag:
+                name = name_tag.text
+                price = price_tag.text
+                image = image_tag['src']
+                product_info = {'name': name, 'price': price, 'image': image}
+                product_info_list.append(product_info)
+                if len(product_info_list)==10:
+                    break
+
+    return render(request, 'home.html', {'product_info_list': product_info_list})
+
