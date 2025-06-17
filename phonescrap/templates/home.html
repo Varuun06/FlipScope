@@ -59,6 +59,10 @@ th, td {
     text-align: center;
 }
 
+img{
+    object-fit: contain;
+}
+
 th {
     background-color: #007BFF;
     color: white;
@@ -68,10 +72,13 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
+tbody tr{
+    transition: transform 0.5s  ease-in-out, background-color 0.5s ease-in-out;
+}
+
 tbody tr:hover {
-    background-color: #e6f2ff;
     transform: scale(1.02);
-    transition: transform 0.5s ease-in-out;
+    background-color: #e6f2ff;
 }
 
 </style>
