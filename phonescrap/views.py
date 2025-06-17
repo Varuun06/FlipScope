@@ -28,11 +28,13 @@ def home(request):
             name_tag = items.find('div', class_="KzDlHZ")
             price_tag = items.find('div', class_="Nx9bqj _4b5DiR")
             image_tag = items.find('img')
+            link_tag = items.find('a', class_="CGtC98")
             if name_tag and price_tag:
                 name = name_tag.text
                 price = price_tag.text
                 image = image_tag['src']
-                product_info = {'name': name, 'price': price, 'image': image}
+                link = link_tag['href']
+                product_info = {'name': name, 'price': price, 'image': image, 'link': link}
                 product_info_list.append(product_info)
                 if len(product_info_list)==10:
                     break
@@ -43,11 +45,13 @@ def home(request):
             name_tag = items.find('a', class_="wjcEIp")
             price_tag = items.find('div', class_="Nx9bqj")
             image_tag = items.find('img')
+            link_tag = items.find('a', class_="VJA3rP")
             if name_tag and price_tag:
                 name = name_tag.text
                 price = price_tag.text
                 image = image_tag['src']
-                product_info = {'name': name, 'price': price, 'image': image}
+                link = link_tag['href']
+                product_info = {'name': name, 'price': price, 'image': image, 'link': link}
                 product_info_list.append(product_info)
                 if len(product_info_list)==10:
                     break
@@ -58,11 +62,13 @@ def home(request):
             name_tag = items.find('a', class_="WKTcLC")
             price_tag = items.find('div', class_="Nx9bqj")
             image_tag = items.find('img')
+            link_tag = items.find('a', class_="rPDeLR")
             if name_tag and price_tag:
                 name = name_tag.text
                 price = price_tag.text
                 image = image_tag['src']
-                product_info = {'name': name, 'price': price, 'image': image}
+                link = link_tag['href']
+                product_info = {'name': name, 'price': price, 'image': image, 'link': link}
                 product_info_list.append(product_info)
                 if len(product_info_list)==10:
                     break

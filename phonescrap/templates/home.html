@@ -7,80 +7,128 @@
 </head>
 <style>
     body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f8;
-    margin: 0;
-    padding: 20px;
-}
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 20px;
+    }
 
-h1, h2 {
-    text-align: center;
-    color: #333;
-}
+    h1, h2 {
+        text-align: center;
+        color: #333;
+    }
 
-#main {
-    text-align: center;
-    margin-bottom: 20px;
-}
+    #main {
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-input[type="text"] {
-    padding: 10px;
-    width: 300px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-}
+    input[type="text"] {
+        padding: 12px;
+        width: 300px;
+        border-radius: 8px;
+        border: 1px solid #333;
+        font-size: 16px;
+        margin-right: 10px;
+    }
 
-input[type="submit"] {
-    padding: 10px 20px;
-    border: none;
-    background-color: #007BFF;
-    color: white;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
+    input[type="submit"] {
+        padding: 12px 24px;
+        border: none;
+        background-color: #007BFF;
+        color: rgb(255, 255, 255);
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-input[type="submit"]:hover {
-    background-color: #0056b3;
-}
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
 
-table {
-    width: 80%;
-    margin: 0 auto;
-    border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+    .results-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
 
+    .product-card {
+        display: flex;
+        align-items: center;
+        background: rgb(255, 255, 255);
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        padding: 20px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: 2px solid transparent;
+    }
 
-th, td {
-    padding: 12px 15px;
-    text-align: center;
-}
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        border-color: #007BFF;
+    }
 
-img{
-    object-fit: contain;
-}
+    .product-info {
+        flex: 1;
+        padding-right: 20px;
+        text-align: left;
+    }
 
-th {
-    background-color: #007BFF;
-    color: white;
-}
+    .product-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
+    .product-price {
+        font-size: 22px;
+        font-weight: bold;
+        color: #007BFF;
+        margin-top: 10px;
+    }
 
-tbody tr{
-    transition: transform 0.5s  ease-in-out, background-color 0.5s ease-in-out;
-}
+    .product-image {
+        flex-shrink: 0;
+        width: 140px;
+        height: 180px;
+        border-radius: 8px;
+        overflow: hidden;
+        background: rgb(240, 240, 240);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #eee;
+    }
 
-tbody tr:hover {
-    transform: scale(1.02);
-    background-color: #e6f2ff;
-}
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+    }
 
+    .product-card:hover .product-image img {
+        transform: scale(1.05);
+    }
+
+    .no-results {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        margin-top: 40px;
+    }
 </style>
 <body>
     <div>
@@ -88,7 +136,6 @@ tbody tr:hover {
             <h1>Top 10 {{ request.GET.product }} Products</h1>
         {% else %}
             <h1>Search for Products</h1>
-            
         {% endif %}
 
         <form method="GET">
@@ -97,27 +144,27 @@ tbody tr:hover {
                 <input type="text" id="product" name="product" value="{{ request.GET.product }}" placeholder="Search for product">
                 <input type="submit" value="Submit">
             </div>
-            
         </form>
 
         {% if product_info_list %}
             <h2>Results:</h2>
-            <table border="1">
-                <thead>
-                <th>Product</th>
-                <th>Name</th>
-                <th>Price</th>
-                </thead>
-            {% for product_info in product_info_list %}
-            <tbody>
-            <tr>
-                <td><img src='{{product_info.image}}' height="200" width="150" ></td>
-                <td>{{ product_info.name }}</td>
-                <td>{{ product_info.price }}</td>
-            </tr>
-            </tbody>
-            {% endfor %}
-            </table>
+            <div class="results-container">
+                {% for product_info in product_info_list %}
+                    <a href="https://flipkart.com{{ product_info.link }}" target="_blank" class="product-card">
+                        <div class="product-info">
+                            <div class="product-name">{{ product_info.name }}</div>
+                            <div class="product-price">{{ product_info.price }}</div>
+                        </div>
+                        <div class="product-image">
+                            <img src="{{ product_info.image }}" alt="{{ product_info.name }}">
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% elif request.GET.product %}
+            <div class="no-results">
+                <p>No products found for "{{ request.GET.product }}". Try a different search term.</p>
+            </div>
         {% endif %}
     </div>
 </body>
