@@ -15,14 +15,16 @@ def get_content(product):
 
 def home(request):
     product_info_list = []
-    if 'product' in request.GET:
-        product = request.GET.get('product')
-        html_content = get_content(product)
-        soup = BeautifulSoup(html_content, 'html.parser')
+    product = request.GET.get('product', '').strip()
+    if not product:
+        product = "washing machine" 
+    html_content = get_content(product)
+    soup = BeautifulSoup(html_content, 'html.parser')
+    
 
-        product_items = soup.find_all('div', class_="tUxRFH")
-
-        for items in product_items:
+    big_card = soup.find_all('div', class_="tUxRFH")
+    if big_card:
+        for items in big_card:
             name_tag = items.find('div', class_="KzDlHZ")
             price_tag = items.find('div', class_="Nx9bqj _4b5DiR")
             image_tag = items.find('img')
@@ -34,6 +36,37 @@ def home(request):
                 product_info_list.append(product_info)
                 if len(product_info_list)==10:
                     break
+
+    mid_card = soup.find_all('div', class_="slAVV4")
+    if mid_card:
+        for items in mid_card:
+            name_tag = items.find('a', class_="wjcEIp")
+            price_tag = items.find('div', class_="Nx9bqj")
+            image_tag = items.find('img')
+            if name_tag and price_tag:
+                name = name_tag.text
+                price = price_tag.text
+                image = image_tag['src']
+                product_info = {'name': name, 'price': price, 'image': image}
+                product_info_list.append(product_info)
+                if len(product_info_list)==10:
+                    break
+
+    small_card = soup.find_all('div', class_="_1sdMkc LFEi7Z")
+    if small_card:
+        for items in small_card:
+            name_tag = items.find('a', class_="WKTcLC")
+            price_tag = items.find('div', class_="Nx9bqj")
+            image_tag = items.find('img')
+            if name_tag and price_tag:
+                name = name_tag.text
+                price = price_tag.text
+                image = image_tag['src']
+                product_info = {'name': name, 'price': price, 'image': image}
+                product_info_list.append(product_info)
+                if len(product_info_list)==10:
+                    break
+    
 
     return render(request, 'home.html', {'product_info_list': product_info_list})
 
